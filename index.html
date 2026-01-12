@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemas Digitales I - Capítulo 6</title>
+    <title>Capítulo 6: Codificadores y Decodificadores - Presentación Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -14,6 +14,7 @@
             --secondary: #3b82f6;
             --dark: #0f172a;
             --accent: #10b981;
+            --danger: #ef4444;
         }
 
         body {
@@ -21,46 +22,45 @@
             background-color: var(--dark);
             color: #f8fafc;
             margin: 0;
-            overflow: hidden; /* Evita scroll durante la presentación */
+            overflow: hidden;
+            user-select: none;
         }
 
-        /* Estructura de Diapositivas */
+        /* Sistema de Diapositivas */
         .slide-deck {
             height: 100vh;
             width: 100vw;
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 1200px;
+            perspective: 2000px;
         }
 
         .slide {
             position: absolute;
-            width: 90%;
-            height: 85%;
+            width: 94%;
+            height: 88%;
             background: white;
             color: var(--dark);
-            border-radius: 2rem;
+            border-radius: 2.5rem;
             padding: 3rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
             display: none;
             flex-direction: column;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0;
-            transform: scale(0.9) rotateY(-10deg);
+            transform: scale(0.95) translateY(20px);
             overflow-y: auto;
         }
 
         .slide.active {
             display: flex;
             opacity: 1;
-            transform: scale(1) rotateY(0deg);
+            transform: scale(1) translateY(0);
             z-index: 10;
         }
 
-        /* Utilidades Visuales */
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        
+        /* UI de Navegación */
         .progress-bar {
             position: fixed;
             top: 0;
@@ -78,98 +78,97 @@
             transform: translateX(-50%);
             display: flex;
             gap: 1.5rem;
-            background: rgba(15, 23, 42, 0.85);
-            padding: 0.8rem 1.5rem;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 0.8rem 2.5rem;
             border-radius: 9999px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             z-index: 100;
         }
 
         .btn-nav {
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
         }
 
         .btn-nav:hover:not(.disabled) {
             background: var(--secondary);
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
-        .btn-nav.disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-nav.disabled { opacity: 0.2; cursor: not-allowed; }
 
-        .fullscreen-toggle {
+        .fullscreen-btn {
             position: fixed;
             top: 1.5rem;
             right: 1.5rem;
             background: rgba(255,255,255,0.1);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.8rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 800;
             cursor: pointer;
             z-index: 100;
-            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Componentes de Contenido */
+        /* Estética de Hardware */
+        .segment {
+            fill: #1e293b;
+            transition: fill 0.2s, filter 0.2s;
+        }
+        .segment.on {
+            fill: var(--danger);
+            filter: drop-shadow(0 0 6px var(--danger));
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
         .concept-card {
-            border-left: 5px solid var(--secondary);
-            background: #f1f5f9;
+            border-left: 6px solid var(--secondary);
+            background: #f8fafc;
             padding: 1.5rem;
             border-radius: 0 1rem 1rem 0;
         }
 
-        .segment-led {
-            fill: #e2e8f0;
-            transition: 0.3s;
+        /* Animación de entrada */
+        .reveal {
+            animation: slideUp 0.8s ease-out forwards;
         }
-        .segment-led.on {
-            fill: #ef4444;
-            filter: drop-shadow(0 0 5px #ef4444);
-        }
-
-        /* Animación de entrada de elementos */
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            .slide { padding: 1.5rem; width: 95%; height: 90%; }
-            .hide-mobile { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+    <div class="progress-bar" id="progressBar"></div>
     
-    <button class="fullscreen-toggle" onclick="toggleFullScreen()">
-        <i class="fas fa-expand"></i> PANTALLA COMPLETA
+    <button class="fullscreen-btn uppercase tracking-widest" onclick="toggleFullScreen()">
+        <i class="fas fa-expand mr-2"></i> Pantalla Completa
     </button>
 
     <div class="slide-deck" id="deck">
         
         <!-- DIAPOSITIVA 1: PORTADA -->
-        <div class="slide active flex flex-col items-center justify-center text-center bg-gradient-to-br from-blue-900 to-slate-900 !text-white">
-            <div class="fade-in-up">
-                <span class="px-4 py-1 rounded-full bg-blue-500/20 text-blue-300 text-sm font-bold tracking-widest uppercase mb-6 inline-block">Sistemas Digitales I</span>
-                <h1 class="text-6xl md:text-8xl font-extrabold mb-6 tracking-tighter">Capítulo 6</h1>
-                <h2 class="text-3xl md:text-4xl font-light text-blue-100 mb-12 uppercase tracking-wide">Codificadores y Decodificadores</h2>
-                <div class="flex justify-center gap-10 opacity-60">
-                    <div class="text-center"><i class="fas fa-microchip text-4xl mb-2"></i><p class="text-[10px] font-bold">LÓGICA</p></div>
+        <div class="slide active flex flex-col items-center justify-center text-center bg-gradient-to-br from-slate-900 to-blue-900 !text-white">
+            <div class="reveal">
+                <div class="mb-6 px-4 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-black tracking-[0.3em] uppercase inline-block">
+                    SISTEMAS DIGITALES I - INGENIERÍA
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black mb-4 tracking-tighter uppercase">Capítulo 6</h1>
+                <h2 class="text-3xl md:text-5xl font-light text-blue-100/80 mb-16 tracking-wide">Codificadores y Decodificadores</h2>
+                <div class="flex justify-center gap-12 text-slate-400">
+                    <div class="text-center"><i class="fas fa-microchip text-4xl mb-2"></i><p class="text-[10px] font-bold">HARDWARE</p></div>
                     <div class="text-center"><i class="fas fa-random text-4xl mb-2"></i><p class="text-[10px] font-bold">RUTAS</p></div>
                     <div class="text-center"><i class="fas fa-equals text-4xl mb-2"></i><p class="text-[10px] font-bold">ANÁLISIS</p></div>
                 </div>
@@ -178,296 +177,251 @@
 
         <!-- DIAPOSITIVA 2: 6.1 GENERALIDADES -->
         <div class="slide">
-            <header class="flex justify-between items-center mb-10 border-b pb-6">
+            <div class="flex justify-between items-start mb-12 border-b pb-6">
                 <div>
-                    <h3 class="text-blue-600 font-bold uppercase tracking-widest text-sm">Sección 6.1</h3>
-                    <h2 class="text-4xl font-extrabold text-slate-800">Generalidades</h2>
+                    <p class="text-blue-600 font-black text-xs uppercase tracking-widest mb-2">Introducción</p>
+                    <h2 class="text-5xl font-extrabold text-slate-900">6.1 Generalidades</h2>
                 </div>
                 <i class="fas fa-info-circle text-4xl text-slate-200"></i>
-            </header>
-            <div class="grid md:grid-cols-2 gap-12 h-full">
-                <div class="space-y-6">
-                    <p class="text-xl text-slate-600 leading-relaxed">
-                        Los circuitos codificadores y decodificadores son bloques fundamentales que permiten la **traducción de la información** entre diferentes formatos digitales.
+            </div>
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div class="space-y-8">
+                    <p class="text-2xl text-slate-600 leading-relaxed">
+                        Los codificadores y decodificadores permiten que el lenguaje de las máquinas (binario) sea **traducido e interpretado** por el usuario y otros dispositivos.
                     </p>
                     <div class="concept-card">
-                        <h4 class="font-bold text-slate-800 mb-2">¿Para qué sirven?</h4>
-                        <ul class="space-y-2 text-slate-600 text-sm">
-                            <li><i class="fas fa-check text-blue-500 mr-2"></i> Interfaz con periféricos (teclados, pantallas).</li>
+                        <h4 class="font-bold text-slate-800 mb-2">Aplicaciones de Enrutamiento:</h4>
+                        <ul class="space-y-3 text-slate-600 text-sm">
                             <li><i class="fas fa-check text-blue-500 mr-2"></i> Selección de direcciones de memoria.</li>
-                            <li><i class="fas fa-check text-blue-500 mr-2"></i> Compresión de líneas de control.</li>
+                            <li><i class="fas fa-check text-blue-500 mr-2"></i> Gestión de buses de datos compartidos.</li>
+                            <li><i class="fas fa-check text-blue-500 mr-2"></i> Visualización numérica en displays de 7 segmentos.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="bg-slate-50 rounded-3xl p-8 flex items-center justify-center border-2 border-dashed border-slate-200">
+                <div class="flex items-center justify-center bg-slate-50 rounded-[3rem] p-10 border-2 border-dashed">
                     <div class="text-center">
-                        <!--  -->
-                        <div class="flex items-center gap-4">
-                            <div class="w-32 h-20 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold">ENTRADAS</div>
-                            <i class="fas fa-long-arrow-alt-right text-3xl text-slate-300"></i>
-                            <div class="w-32 h-20 bg-slate-800 text-white rounded-lg flex items-center justify-center font-bold text-xs">CÓDIGO N</div>
-                            <i class="fas fa-long-arrow-alt-right text-3xl text-slate-300"></i>
-                            <div class="w-32 h-20 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold">SALIDAS</div>
-                        </div>
-                        <p class="mt-8 text-xs font-bold text-slate-400 uppercase tracking-widest">Flujo de información digital</p>
+                        <i class="fas fa-exchange-alt text-8xl text-slate-200 mb-6"></i>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Flujo de Datos Digitales</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- DIAPOSITIVA 3: 6.2 FAMILIA DE CIRCUITOS LÓGICOS -->
+        <!-- DIAPOSITIVA 3: 6.2 - 6.4 FAMILIAS LÓGICAS -->
         <div class="slide">
-            <header class="flex justify-between items-center mb-10 border-b pb-6">
-                <div>
-                    <h3 class="text-blue-600 font-bold uppercase tracking-widest text-sm">Sección 6.2</h3>
-                    <h2 class="text-4xl font-extrabold text-slate-800">Familias de Circuitos Lógicos</h2>
-                </div>
-                <i class="fas fa-microchip text-4xl text-slate-200"></i>
-            </header>
-            <p class="text-lg text-slate-600 mb-10">La construcción física de una compuerta determina su velocidad, consumo de potencia y voltajes de operación. Existen dos familias predominantes:</p>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="p-8 bg-blue-600 rounded-3xl text-white shadow-xl flex flex-col justify-between">
-                    <div>
-                        <h4 class="text-2xl font-black mb-4 uppercase">Familia TTL</h4>
-                        <p class="text-blue-100 text-sm mb-6">Basada en transistores de unión bipolar (BJT). Fue el estándar absoluto durante décadas.</p>
-                    </div>
-                    <div class="flex justify-between items-end">
-                        <span class="text-xs font-bold opacity-60 italic">Tecnología Robusta</span>
-                        <i class="fas fa-bolt text-5xl opacity-20"></i>
-                    </div>
-                </div>
-                <div class="p-8 bg-emerald-600 rounded-3xl text-white shadow-xl flex flex-col justify-between">
-                    <div>
-                        <h4 class="text-2xl font-black mb-4 uppercase">Familia CMOS</h4>
-                        <p class="text-emerald-100 text-sm mb-6">Basada en transistores MOSFET de canal N y P. Es la base de los procesadores actuales.</p>
-                    </div>
-                    <div class="flex justify-between items-end">
-                        <span class="text-xs font-bold opacity-60 italic">Bajo Consumo</span>
-                        <i class="fas fa-leaf text-5xl opacity-20"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DIAPOSITIVA 4: 6.3 LA FAMILIA TTL -->
-        <div class="slide">
-            <header class="flex justify-between items-center mb-10 border-b pb-6">
-                <div>
-                    <h3 class="text-blue-600 font-bold uppercase tracking-widest text-sm">Sección 6.3</h3>
-                    <h2 class="text-4xl font-extrabold text-slate-800">Análisis: La Familia TTL</h2>
-                </header>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <p class="text-slate-600">**TTL** (Transistor-Transistor Logic) se identifica comúnmente por la serie **74**.</p>
-                    <div class="bg-slate-900 text-white p-6 rounded-2xl">
-                        <h5 class="text-blue-400 font-bold mb-4 uppercase text-xs">Características Técnicas:</h5>
-                        <ul class="space-y-4 text-sm">
-                            <li class="flex gap-4"><i class="fas fa-plug mt-1"></i> <span>**Voltaje:** Estrictamente 5V. Un margen de ±0.25V es crítico.</span></li>
-                            <li class="flex gap-4"><i class="fas fa-tachometer-alt mt-1"></i> <span>**Velocidad:** Muy rápida para lógica discreta.</span></li>
-                            <li class="flex gap-4"><i class="fas fa-thermometer-half mt-1"></i> <span>**Potencia:** Disipa calor considerable debido a la corriente de polarización.</span></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center gap-4">
-                    <div class="p-4 border rounded-xl bg-slate-50 text-xs">
-                        <span class="font-bold block text-blue-600">Ejemplos de Chips:</span>
-                        74LS08 (AND), 74LS32 (OR), 74LS47 (BCD to 7-Seg).
-                    </div>
-                    <div class="p-6 bg-amber-50 rounded-xl border-l-4 border-amber-500 text-sm italic">
-                        "En el laboratorio de la UPDS, el uso de la familia 74LS es ideal por su resistencia a manipulaciones accidentales."
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DIAPOSITIVA 5: 6.4 LA FAMILIA CMOS -->
-        <div class="slide">
-            <header class="flex justify-between items-center mb-10 border-b pb-6">
-                <div>
-                    <h3 class="text-blue-600 font-bold uppercase tracking-widest text-sm">Sección 6.4</h3>
-                    <h2 class="text-4xl font-extrabold text-slate-800">Análisis: La Familia CMOS</h2>
-                </header>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <p class="text-slate-600">**CMOS** (Complementary Metal-Oxide-Semiconductor) se identifica por las series **4000** o **74HC**.</p>
-                    <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-2xl">
-                        <h5 class="text-emerald-700 font-bold mb-4 uppercase text-xs">Ventajas sobre TTL:</h5>
-                        <ul class="space-y-4 text-sm text-slate-700">
-                            <li class="flex gap-4"><i class="fas fa-battery-full mt-1"></i> <span>**Consumo:** Casi nulo en estado estático.</span></li>
-                            <li class="flex gap-4"><i class="fas fa-arrows-alt-h mt-1"></i> <span>**Rango Vcc:** Funciona desde 3V hasta 15V.</span></li>
-                            <li class="flex gap-4"><i class="fas fa-shield-alt mt-1"></i> <span>**Inmunidad al ruido:** Excelente estabilidad de señal.</span></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center text-center">
-                    <i class="fas fa-exclamation-triangle text-amber-500 text-5xl mb-4"></i>
-                    <p class="text-sm font-bold text-slate-800">¡PRECAUCIÓN!</p>
-                    <p class="text-xs text-slate-500 max-w-xs mx-auto">Los circuitos CMOS son extremadamente sensibles a la electricidad estática (ESD). Deben manipularse con pulseras antiestáticas.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- DIAPOSITIVA 6: 6.5 ANÁLISIS DE CODIFICADORES Y DECODIFICADORES -->
-        <div class="slide">
-            <header class="flex justify-between items-center mb-10 border-b pb-6">
-                <div>
-                    <h3 class="text-blue-600 font-bold uppercase tracking-widest text-sm">Sección 6.5</h3>
-                    <h2 class="text-4xl font-extrabold text-slate-800">Codificadores y Decodificadores</h2>
-                </div>
-                <i class="fas fa-braille text-4xl text-slate-200"></i>
+            <header class="mb-12">
+                <h2 class="text-5xl font-extrabold text-slate-900">Familias de Circuitos Lógicos</h2>
+                <p class="text-slate-500 mt-2">Diferencias tecnológicas entre TTL y CMOS</p>
             </header>
             <div class="grid md:grid-cols-2 gap-10">
-                <div class="p-6 bg-slate-50 rounded-2xl border">
-                    <h4 class="font-bold text-slate-900 mb-3"><i class="fas fa-compress-alt mr-2 text-blue-500"></i> Codificador</h4>
-                    <p class="text-sm text-slate-500 mb-4">Transforma una entrada activa en un código binario único.</p>
-                    <div class="mono text-[10px] p-3 bg-white border rounded">
-                        2^n Entradas → n Líneas de salida
+                <!-- TTL -->
+                <div class="bg-blue-600 p-10 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden group">
+                    <h3 class="text-4xl font-black mb-4">TTL (74xx)</h3>
+                    <p class="text-blue-100 text-sm mb-8 leading-relaxed">Basada en transistores bipolares. Prioriza la robustez y velocidad en laboratorios educativos.</p>
+                    <div class="flex justify-between items-center text-xs font-bold opacity-60">
+                        <span>VOLTAJE: 5V</span>
+                        <span>SERIE: 74LS</span>
                     </div>
-                    <p class="mt-4 text-xs italic">Ej: Codificador de prioridad 74LS147.</p>
+                    <i class="fas fa-bolt absolute -bottom-10 -right-10 text-9xl opacity-10"></i>
                 </div>
-                <div class="p-6 bg-slate-50 rounded-2xl border">
-                    <h4 class="font-bold text-slate-900 mb-3"><i class="fas fa-expand-alt mr-2 text-indigo-500"></i> Decodificador</h4>
-                    <p class="text-sm text-slate-500 mb-4">Identifica un código binario y activa una salida correspondiente.</p>
-                    <div class="mono text-[10px] p-3 bg-white border rounded">
-                        n Entradas → 2^n Líneas de salida
+                <!-- CMOS -->
+                <div class="bg-slate-900 p-10 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden group">
+                    <h3 class="text-4xl font-black mb-4 text-emerald-400">CMOS (40xx)</h3>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Basada en MOSFETs. Es el estándar de bajo consumo en dispositivos móviles y CPUs.</p>
+                    <div class="flex justify-between items-center text-xs font-bold opacity-40">
+                        <span>VOLTAJE: 3V-15V</span>
+                        <span>EFICIENCIA: ALTA</span>
                     </div>
-                    <p class="mt-4 text-xs italic">Ej: Decodificador 3 a 8 74LS138.</p>
+                    <i class="fas fa-leaf absolute -bottom-10 -right-10 text-9xl opacity-10 text-emerald-500"></i>
                 </div>
             </div>
         </div>
 
-        <!-- DIAPOSITIVA 7: LABORATORIO INTERACTIVO 7-SEGMENTOS -->
+        <!-- DIAPOSITIVA 4: 6.5 ANÁLISIS DE COD/DEC -->
         <div class="slide">
-            <header class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-extrabold text-slate-800">Laboratorio: Decodificador a 7-Seg</h2>
-                <span class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-full font-bold">INTERACTIVO</span>
+            <header class="mb-12 border-b pb-6">
+                <h2 class="text-5xl font-extrabold text-slate-900">6.5 Codificadores y Decodificadores</h2>
             </header>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6">
-                    <p class="text-slate-600 text-sm">Prueba el funcionamiento de un **74LS47**. Cambia los bits BCD para ver el dígito.</p>
-                    <div class="grid grid-cols-4 gap-4">
-                        <div class="text-center"><label class="text-[10px] font-bold block mb-2">D (8)</label><button onclick="toggleBit(3)" id="bit3" class="w-full h-12 rounded bg-slate-200 border-2 transition font-bold">0</button></div>
-                        <div class="text-center"><label class="text-[10px] font-bold block mb-2">C (4)</label><button onclick="toggleBit(2)" id="bit2" class="w-full h-12 rounded bg-slate-200 border-2 transition font-bold">0</button></div>
-                        <div class="text-center"><label class="text-[10px] font-bold block mb-2">B (2)</label><button onclick="toggleBit(1)" id="bit1" class="w-full h-12 rounded bg-slate-200 border-2 transition font-bold">0</button></div>
-                        <div class="text-center"><label class="text-[10px] font-bold block mb-2">A (1)</label><button onclick="toggleBit(0)" id="bit0" class="w-full h-12 rounded bg-slate-200 border-2 transition font-bold">0</button></div>
-                    </div>
-                    <div class="p-4 bg-blue-600 text-white rounded-xl text-center">
-                        <span class="text-xs font-bold uppercase opacity-60">Valor Decimal</span>
-                        <div class="text-3xl font-black" id="decimalVal">0</div>
-                    </div>
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="p-8 bg-slate-50 rounded-3xl border hover:border-blue-500 transition-colors">
+                    <h4 class="text-2xl font-black text-blue-700 mb-4 uppercase">Codificador</h4>
+                    <p class="text-sm text-slate-500 mb-6">Convierte un evento de entrada activa en un código binario compacto.</p>
+                    <div class="p-3 bg-white border rounded-xl mono text-[10px] text-center">2^n ENTRADAS → n SALIDAS</div>
                 </div>
-                <div class="flex justify-center p-10 bg-slate-900 rounded-3xl">
-                    <svg viewBox="0 0 100 160" class="w-32 h-auto">
-                        <path id="seg-a" class="segment-led" d="M20 10 L80 10 L75 18 L25 18 Z" />
-                        <path id="seg-b" class="segment-led" d="M82 12 L82 78 L74 73 L74 20 Z" />
-                        <path id="seg-c" class="segment-led" d="M82 82 L82 148 L74 140 L74 87 Z" />
-                        <path id="seg-d" class="segment-led" d="M20 150 L80 150 L75 142 L25 142 Z" />
-                        <path id="seg-e" class="segment-led" d="M18 82 L18 148 L26 140 L26 87 Z" />
-                        <path id="seg-f" class="segment-led" d="M18 12 L18 78 L26 73 L26 20 Z" />
-                        <path id="seg-g" class="segment-led" d="M22 80 L78 80 L73 85 L27 85 L22 80 Z" />
-                    </svg>
+                <div class="p-8 bg-slate-50 rounded-3xl border hover:border-indigo-500 transition-colors">
+                    <h4 class="text-2xl font-black text-indigo-700 mb-4 uppercase">Decodificador</h4>
+                    <p class="text-sm text-slate-500 mb-6">Interpreta un código binario para activar una línea de salida específica.</p>
+                    <div class="p-3 bg-white border rounded-xl mono text-[10px] text-center">n ENTRADAS → 2^n SALIDAS</div>
                 </div>
+            </div>
+            <div class="mt-10 p-6 bg-blue-900 text-white rounded-2xl flex items-center gap-6">
+                <i class="fas fa-lightbulb text-3xl text-amber-400"></i>
+                <p class="text-sm italic">"Un decodificador BCD a 7-Segmentos (74LS47) permite visualizar el número 15 usando dos displays controlados por el mismo bus."</p>
             </div>
         </div>
 
-        <!-- DIAPOSITIVA 8: 6.6 MULTIPLEXORES Y DEMULTIPLEXORES -->
+        <!-- DIAPOSITIVA 5: LABORATORIO INTERACTIVO (4 BITS -> 2 DÍGITOS) -->
         <div class="slide">
-            <header class="flex justify-between items-center mb-10 border-b pb-6">
+            <header class="flex justify-between items-center mb-8">
                 <div>
-                    <h3 class="text-blue-600 font-bold uppercase tracking-widest text-sm">Sección 6.6</h3>
-                    <h2 class="text-4xl font-extrabold text-slate-800">Multiplexores y Demultiplexores</h2>
+                    <h3 class="text-red-600 font-black text-xs uppercase tracking-widest mb-1">Simulación Dinámica</h3>
+                    <h2 class="text-4xl font-extrabold text-slate-800">Decodificación Binario a Decimal (0-15)</h2>
                 </div>
-                <i class="fas fa-random text-4xl text-slate-200"></i>
+                <div class="bg-red-600 text-white px-4 py-1 rounded-full text-[10px] font-bold animate-pulse">LABORATORIO</div>
             </header>
-            <div class="grid md:grid-cols-2 gap-8 h-full">
+            
+            <div class="grid lg:grid-cols-3 gap-10 items-center">
+                <!-- Entradas de 4 bits -->
                 <div class="space-y-6">
-                    <div class="p-6 bg-white border-2 border-blue-100 rounded-3xl">
-                        <h4 class="font-bold text-blue-600 mb-4"><i class="fas fa-sign-in-alt mr-2"></i> Multiplexor (MUX)</h4>
-                        <p class="text-sm text-slate-600 leading-relaxed">Actúa como un **selector de datos**. Múltiples entradas, una sola salida. La selección la realiza un código de control.</p>
-                        <p class="text-[10px] mt-4 font-bold text-slate-400">APLICACIÓN: Conmutador de señales digitales.</p>
+                    <h4 class="font-bold text-slate-400 text-xs uppercase tracking-widest">Código de Entrada (4 Bits)</h4>
+                    <div class="grid grid-cols-4 gap-3">
+                        <div class="text-center"><p class="text-[10px] mb-2 font-bold opacity-50">D (8)</p><button onclick="toggleBit(3)" id="bit3" class="w-full h-14 bg-slate-100 border-2 rounded-xl font-black mono text-xl transition-all">0</button></div>
+                        <div class="text-center"><p class="text-[10px] mb-2 font-bold opacity-50">C (4)</p><button onclick="toggleBit(2)" id="bit2" class="w-full h-14 bg-slate-100 border-2 rounded-xl font-black mono text-xl transition-all">0</button></div>
+                        <div class="text-center"><p class="text-[10px] mb-2 font-bold opacity-50">B (2)</p><button onclick="toggleBit(1)" id="bit1" class="w-full h-14 bg-slate-100 border-2 rounded-xl font-black mono text-xl transition-all">0</button></div>
+                        <div class="text-center"><p class="text-[10px] mb-2 font-bold opacity-50">A (1)</p><button onclick="toggleBit(0)" id="bit0" class="w-full h-14 bg-slate-100 border-2 rounded-xl font-black mono text-xl transition-all">0</button></div>
+                    </div>
+                    <div class="p-6 bg-slate-900 rounded-2xl text-center">
+                        <span class="text-xs text-blue-400 font-bold uppercase block mb-1">Valor Calculado</span>
+                        <div class="text-5xl font-black text-white mono" id="decValue">00</div>
                     </div>
                 </div>
-                <div class="space-y-6">
-                    <div class="p-6 bg-white border-2 border-indigo-100 rounded-3xl">
-                        <h4 class="font-bold text-indigo-600 mb-4"><i class="fas fa-sign-out-alt mr-2"></i> Demultiplexor (DEMUX)</h4>
-                        <p class="text-sm text-slate-600 leading-relaxed">Es el proceso inverso. Una sola entrada se dirige a una de las varias salidas posibles.</p>
-                        <p class="text-[10px] mt-4 font-bold text-slate-400">APLICACIÓN: Distribuidor de señales.</p>
+
+                <!-- Visualización de Dos Dígitos -->
+                <div class="lg:col-span-2 flex justify-center items-center gap-12 bg-slate-100 p-12 rounded-[3rem] border-2 border-dashed">
+                    <!-- Display Decenas -->
+                    <div class="text-center">
+                        <p class="text-[10px] font-bold text-slate-400 mb-4 uppercase">Decenas</p>
+                        <div class="bg-slate-900 p-6 rounded-2xl shadow-xl">
+                            <svg viewBox="0 0 100 160" class="w-24 h-auto">
+                                <path id="segD-a" class="segment" d="M20 10 L80 10 L75 18 L25 18 Z" />
+                                <path id="segD-b" class="segment" d="M82 12 L82 78 L74 73 L74 20 Z" />
+                                <path id="segD-c" class="segment" d="M82 82 L82 148 L74 140 L74 87 Z" />
+                                <path id="segD-d" class="segment" d="M20 150 L80 150 L75 142 L25 142 Z" />
+                                <path id="segD-e" class="segment" d="M18 82 L18 148 L26 140 L26 87 Z" />
+                                <path id="segD-f" class="segment" d="M18 12 L18 78 L26 73 L26 20 Z" />
+                                <path id="segD-g" class="segment" d="M22 80 L78 80 L73 85 L27 85 L22 80 Z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Display Unidades -->
+                    <div class="text-center">
+                        <p class="text-[10px] font-bold text-slate-400 mb-4 uppercase">Unidades</p>
+                        <div class="bg-slate-900 p-6 rounded-2xl shadow-xl">
+                            <svg viewBox="0 0 100 160" class="w-24 h-auto">
+                                <path id="segU-a" class="segment" d="M20 10 L80 10 L75 18 L25 18 Z" />
+                                <path id="segU-b" class="segment" d="M82 12 L82 78 L74 73 L74 20 Z" />
+                                <path id="segU-c" class="segment" d="M82 82 L82 148 L74 140 L74 87 Z" />
+                                <path id="segU-d" class="segment" d="M20 150 L80 150 L75 142 L25 142 Z" />
+                                <path id="segU-e" class="segment" d="M18 82 L18 148 L26 140 L26 87 Z" />
+                                <path id="segU-f" class="segment" d="M18 12 L18 78 L26 73 L26 20 Z" />
+                                <path id="segU-g" class="segment" d="M22 80 L78 80 L73 85 L27 85 L22 80 Z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- DIAPOSITIVA 9: 6.7 ANÁLISIS DE COMPARADORES -->
+        <!-- DIAPOSITIVA 6: 6.6 MUX Y DEMUX -->
         <div class="slide">
-            <header class="flex justify-between items-center mb-10 border-b pb-6">
-                <div>
-                    <h3 class="text-blue-600 font-bold uppercase tracking-widest text-sm">Sección 6.7</h3>
-                    <h2 class="text-4xl font-extrabold text-slate-800">Análisis de Comparadores</h2>
-                </div>
-                <i class="fas fa-equals text-4xl text-slate-200"></i>
+            <header class="mb-12 border-b pb-6">
+                <h2 class="text-5xl font-extrabold text-slate-900">6.6 Multiplexores y Demultiplexores</h2>
             </header>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <p class="text-lg text-slate-600 leading-relaxed">Un **comparador de magnitud** examina dos números binarios (A y B) y determina su relación relativa.</p>
-                    <div class="grid grid-cols-1 gap-3">
-                        <div class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border">
-                            <span class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center font-bold">></span>
-                            <span class="text-sm font-bold text-slate-700">A es mayor que B</span>
-                        </div>
-                        <div class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border">
-                            <span class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center font-bold">=</span>
-                            <span class="text-sm font-bold text-slate-700">A es igual a B</span>
-                        </div>
-                        <div class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border">
-                            <span class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center font-bold"><</span>
-                            <span class="text-sm font-bold text-slate-700">A es menor que B</span>
-                        </div>
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="p-8 bg-blue-50 rounded-[2.5rem] border border-blue-100 flex flex-col justify-between shadow-sm">
+                    <div>
+                        <h4 class="text-2xl font-black text-blue-700 mb-4">Multiplexor (MUX)</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed italic mb-6">"El selector de señales"</p>
+                        <p class="text-sm text-slate-500">Recibe varias entradas y encamina una hacia la salida según las líneas de control. Esencial para buses de datos compartidos.</p>
                     </div>
+                    <p class="text-[10px] font-bold text-slate-400 mt-6 uppercase">Uso: Conmutadores de datos</p>
                 </div>
-                <div class="bg-indigo-900 rounded-3xl p-8 text-white relative overflow-hidden">
-                    <h5 class="text-sky-400 font-bold mb-4 uppercase text-xs">Uso en el Mundo Real:</h5>
-                    <p class="text-sm text-indigo-100 italic mb-6">"Imagina un sistema de control de temperatura en una planta industrial. El comparador decide si activar el calefactor basándose en la temperatura deseada (A) vs la temperatura actual (B)."</p>
-                    <i class="fas fa-industry absolute -bottom-5 -right-5 text-8xl opacity-10"></i>
+                <div class="p-8 bg-slate-900 text-white rounded-[2.5rem] flex flex-col justify-between shadow-xl">
+                    <div>
+                        <h4 class="text-2xl font-black text-sky-400 mb-4">Demultiplexor (DEMUX)</h4>
+                        <p class="text-sm text-slate-400 leading-relaxed italic mb-6">"El distribuidor de señales"</p>
+                        <p class="text-sm text-slate-300">Toma una sola entrada y la dirige hacia una de las múltiples salidas disponibles. Proceso inverso al MUX.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- DIAPOSITIVA 10: RESUMEN Y CONCLUSIONES -->
-        <div class="slide bg-slate-900 !text-white flex items-center justify-center text-center">
-            <div>
-                <h2 class="text-5xl font-extrabold mb-8">Conclusiones del Capítulo</h2>
-                <div class="w-20 h-1 bg-blue-500 mx-auto mb-10"></div>
-                <div class="grid md:grid-cols-3 gap-8 max-w-4xl">
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                        <i class="fas fa-cogs text-2xl text-blue-400 mb-4"></i>
-                        <p class="text-xs">Los cod/dec simplifican la arquitectura de hardware.</p>
-                    </div>
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                        <i class="fas fa-project-diagram text-2xl text-emerald-400 mb-4"></i>
-                        <p class="text-xs">El enrutamiento de datos (MUX) optimiza el uso de buses.</p>
-                    </div>
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                        <i class="fas fa-graduation-cap text-2xl text-amber-400 mb-4"></i>
-                        <p class="text-xs">Diferenciar TTL de CMOS es vital para el diseño electrónico.</p>
+        <!-- DIAPOSITIVA 7: 6.7 COMPARADORES -->
+        <div class="slide">
+            <header class="mb-12 border-b pb-6">
+                <h2 class="text-5xl font-extrabold text-slate-900">6.7 Análisis de Comparadores</h2>
+            </header>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <p class="text-xl text-slate-600">Un comparador de magnitud examina dos números (A y B) y determina si son **Mayores, Iguales o Menores**.</p>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border">
+                            <span class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold">></span>
+                            <span class="font-bold text-slate-800">A es Mayor que B</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border">
+                            <span class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold">=</span>
+                            <span class="font-bold text-slate-800">A es Igual a B</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border">
+                            <span class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold"><</span>
+                            <span class="font-bold text-slate-800">A es Menor que B</span>
+                        </div>
                     </div>
                 </div>
-                <button onclick="goToSlide(0)" class="mt-12 px-8 py-3 bg-blue-600 rounded-full font-bold hover:bg-blue-500 transition shadow-xl">VOLVER AL INICIO</button>
+                <div class="bg-indigo-900 text-white rounded-[3rem] p-10 flex flex-col justify-center relative overflow-hidden shadow-2xl">
+                    <h5 class="text-sky-400 font-bold mb-4 uppercase text-xs tracking-widest">Ejemplo Industrial:</h5>
+                    <p class="text-sm italic leading-relaxed text-indigo-100">"En sistemas de control automático en Bolivia, se usa para comparar el nivel de un tanque con un setpoint y activar la bomba de llenado."</p>
+                    <i class="fas fa-industry absolute -bottom-10 -right-10 text-[12rem] opacity-5"></i>
+                </div>
             </div>
+        </div>
+
+        <!-- DIAPOSITIVA 8: EJEMPLOS Y APLICACIONES -->
+        <div class="slide">
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-10 border-b pb-6">Ejemplos y Aplicaciones Reales</h2>
+            <div class="grid grid-cols-3 gap-8 h-full">
+                <div class="p-8 bg-slate-50 rounded-3xl border shadow-sm flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 text-2xl"><i class="fas fa-keyboard"></i></div>
+                    <h4 class="font-bold mb-2">Teclados</h4>
+                    <p class="text-xs text-slate-500">Un codificador traduce la tecla presionada en un código binario para el procesador.</p>
+                </div>
+                <div class="p-8 bg-slate-50 rounded-3xl border shadow-sm flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 text-2xl"><i class="fas fa-tv"></i></div>
+                    <h4 class="font-bold mb-2">Sistemas de Visualización</h4>
+                    <p class="text-xs text-slate-500">Uso de decodificadores BCD para mostrar turnos o precios en displays de 7 segmentos.</p>
+                </div>
+                <div class="p-8 bg-slate-50 rounded-3xl border shadow-sm flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6 text-2xl"><i class="fas fa-server"></i></div>
+                    <h4 class="font-bold mb-2">Servidores</h4>
+                    <p class="text-xs text-slate-500">Multiplexores que encaminan flujos de datos de diferentes usuarios por un solo bus.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAPOSITIVA 9: CIERRE -->
+        <div class="slide bg-slate-900 !text-white flex flex-col items-center justify-center text-center">
+            <h2 class="text-6xl font-black mb-8 tracking-tighter">Fin del Capítulo 6</h2>
+            <div class="w-24 h-2 bg-blue-500 rounded-full mb-12"></div>
+            <p class="text-slate-400 max-w-xl mx-auto mb-16 leading-relaxed">
+                Ahora comprendemos la importancia de los sistemas de enrutamiento y decodificación en la arquitectura de hardware digital.
+            </p>
+            <button onclick="goToSlide(0)" class="px-10 py-4 bg-blue-600 rounded-full font-black hover:bg-blue-500 transition-all shadow-2xl">VOLVER AL INICIO</button>
         </div>
 
     </div>
 
-    <!-- Controles -->
+    <!-- Controles Inferiores -->
     <div class="controls">
         <button class="btn-nav" id="prevBtn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
-        <div class="flex items-center text-white px-2 font-bold text-sm mono">
-            <span id="slideCounter">1</span> / 10
+        <div class="flex items-center text-white px-2 font-black text-sm mono">
+            <span id="slideCounter">1</span> / 9
         </div>
         <button class="btn-nav" id="nextBtn" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <script>
-        // --- SISTEMA DE DIAPOSITIVAS ---
+        // --- MOTOR DE NAVEGACIÓN ---
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const progressBar = document.getElementById('progressBar');
@@ -477,15 +431,9 @@
 
         function updateSlide() {
             slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
-            
-            // Actualizar barra de progreso
-            const percent = ((currentSlide + 1) / slides.length) * 100;
-            progressBar.style.width = percent + "%";
-            
-            // Actualizar contador
+            const pct = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = pct + "%";
             slideCounter.innerText = currentSlide + 1;
-
-            // Actualizar botones
             prevBtn.classList.toggle('disabled', currentSlide === 0);
             nextBtn.classList.toggle('disabled', currentSlide === slides.length - 1);
         }
@@ -494,14 +442,11 @@
         function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
         function goToSlide(n) { currentSlide = n; updateSlide(); }
 
-        // Navegación teclado
         document.addEventListener('keydown', (e) => {
             if (e.key === "ArrowRight" || e.key === " ") nextSlide();
             if (e.key === "ArrowLeft") prevSlide();
-            if (e.key === "Escape" && document.fullscreenElement) toggleFullScreen();
         });
 
-        // Pantalla completa
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
@@ -510,42 +455,49 @@
             }
         }
 
-        // --- LÓGICA INTERACTIVA CAPÍTULO 6 ---
-        let bcdBits = [0, 0, 0, 0];
-        const segMapping = {
-            0: [1, 1, 1, 1, 1, 1, 0], 1: [0, 1, 1, 0, 0, 0, 0], 2: [1, 1, 0, 1, 1, 0, 1],
-            3: [1, 1, 1, 1, 0, 0, 1], 4: [0, 1, 1, 0, 0, 1, 1], 5: [1, 0, 1, 1, 0, 1, 1],
-            6: [1, 0, 1, 1, 1, 1, 1], 7: [1, 1, 1, 0, 0, 0, 0], 8: [1, 1, 1, 1, 1, 1, 1],
-            9: [1, 1, 1, 1, 0, 1, 1]
+        // --- LÓGICA DE LABORATORIO (4 BITS -> 2 DÍGITOS) ---
+        let bits = [0,0,0,0];
+        const segMap = {
+            0: [1,1,1,1,1,1,0], 1: [0,1,1,0,0,0,0], 2: [1,1,0,1,1,0,1],
+            3: [1,1,1,1,0,0,1], 4: [0,1,1,0,0,1,1], 5: [1,0,1,1,0,1,1],
+            6: [1,0,1,1,1,1,1], 7: [1,1,1,0,0,0,0], 8: [1,1,1,1,1,1,1],
+            9: [1,1,1,1,0,1,1]
         };
 
         function toggleBit(idx) {
-            bcdBits[idx] = bcdBits[idx] === 0 ? 1 : 0;
+            bits[idx] = bits[idx] === 0 ? 1 : 0;
             const btn = document.getElementById(`bit${idx}`);
-            btn.innerText = bcdBits[idx];
-            btn.classList.toggle('bg-blue-600', bcdBits[idx] === 1);
-            btn.classList.toggle('text-white', bcdBits[idx] === 1);
-            btn.classList.toggle('border-blue-400', bcdBits[idx] === 1);
+            btn.innerText = bits[idx];
+            btn.classList.toggle('bg-blue-600', bits[idx] === 1);
+            btn.classList.toggle('text-white', bits[idx] === 1);
+            btn.classList.toggle('border-blue-400', bits[idx] === 1);
+
+            const decVal = bits[3]*8 + bits[2]*4 + bits[1]*2 + bits[0]*1;
+            document.getElementById('decValue').innerText = decVal.toString().padStart(2, '0');
             
-            const decimal = bcdBits[3]*8 + bcdBits[2]*4 + bcdBits[1]*2 + bcdBits[0]*1;
-            document.getElementById('decimalVal').innerText = decimal;
-            updateSegments(decimal);
+            // Lógica de separación de dígitos
+            const tens = Math.floor(decVal / 10);
+            const units = decVal % 10;
+            
+            updateDisplay('D', tens);
+            updateDisplay('U', units);
         }
 
-        function updateSegments(val) {
+        function updateDisplay(id, val) {
             const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-            const states = segMapping[val] || [0, 0, 0, 0, 0, 0, 0];
+            const states = segMap[val] || [0,0,0,0,0,0,0];
+            
             segments.forEach((s, i) => {
-                const el = document.getElementById(`seg-${s}`);
+                const el = document.getElementById(`seg${id}-${s}`);
                 if (states[i]) el.classList.add('on');
                 else el.classList.remove('on');
             });
         }
 
-        // Iniciar
+        // Inicialización
         updateSlide();
-        updateSegments(0);
-
+        updateDisplay('D', 0);
+        updateDisplay('U', 0);
     </script>
 </body>
 </html>
